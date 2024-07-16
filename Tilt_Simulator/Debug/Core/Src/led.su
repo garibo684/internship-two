@@ -1,0 +1,3 @@
+../Core/Src/led.c:3:6:LedBlink	16	static
+../Core/Src/led.c:9:6:LedBlinkMid	16	static
+../Core/Src/led.c:15:6:LedBlinkFast	16	static

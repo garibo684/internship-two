@@ -1,0 +1,3 @@
+../Core/Src/audio_player.c:11:6:PlayerInit	80	static
+../Core/Src/audio_player.c:22:6:AudioPlay	24	static
+../Core/Src/audio_player.c:52:6:AudioToggle	8	static

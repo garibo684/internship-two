@@ -1,0 +1,11 @@
+../Core/Src/my_linked_list.c:3:6:InitializeList	1
+../Core/Src/my_linked_list.c:12:9:GetDecimal	7
+../Core/Src/my_linked_list.c:58:6:AddHead	3
+../Core/Src/my_linked_list.c:86:6:AddTail	2
+../Core/Src/my_linked_list.c:106:7:GetNode	3
+../Core/Src/my_linked_list.c:123:19:CheckNode	3
+../Core/Src/my_linked_list.c:140:6:Delete	9
+../Core/Src/my_linked_list.c:190:13:IsEmpty	3
+../Core/Src/my_linked_list.c:201:6:WriteIndex	4
+../Core/Src/my_linked_list.c:240:6:WriteData	4
+../Core/Src/my_linked_list.c:279:6:DisplayLinkedList	3

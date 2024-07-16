@@ -1,0 +1,8 @@
+../myDrivers/Src/SYSTICK.c:10:10:SystemCoreClockUpdate	40	static
+../myDrivers/Src/SYSTICK.c:69:6:NVIC_SetPriority	24	static
+../myDrivers/Src/SYSTICK.c:85:6:IncTick	8	static
+../myDrivers/Src/SYSTICK.c:90:10:GetTick	8	static
+../myDrivers/Src/SYSTICK.c:95:6:TickReset	8	static
+../myDrivers/Src/SYSTICK.c:100:10:SysTickConfig	16	static
+../myDrivers/Src/SYSTICK.c:117:10:GetTickLimit	8	static
+../myDrivers/Src/SYSTICK.c:122:6:Delay	16	static

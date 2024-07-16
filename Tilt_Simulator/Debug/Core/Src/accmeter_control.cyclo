@@ -1,0 +1,9 @@
+../Core/Src/accmeter_control.c:6:7:AbsFloat	2
+../Core/Src/accmeter_control.c:18:6:WriteData	9
+../Core/Src/accmeter_control.c:79:6:MeterInit	1
+../Core/Src/accmeter_control.c:92:20:GetScaledData	2
+../Core/Src/accmeter_control.c:102:6:MeterCalibrate	1
+../Core/Src/accmeter_control.c:109:6:SimulatorLedControl	18
+../Core/Src/accmeter_control.c:204:14:Simulator	15
+../Core/Src/accmeter_control.c:268:6:StartSimulator	1
+../Core/Src/accmeter_control.c:289:6:ResetSimulator	3

@@ -1,0 +1,15 @@
+../Core/Src/main.c:114:6:setPWM_Freq	24	static
+../Core/Src/main.c:124:6:setPWM_DutyCycle	24	static
+../Core/Src/main.c:133:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/main.c:140:6:HAL_UART_TxCpltCallback	16	static
+../Core/Src/main.c:144:13:Led_GPIO_OutputInit	32	static
+../Core/Src/main.c:157:13:Led_TIM_OutputInit	40	static
+../Core/Src/main.c:175:6:LedControl	104	static
+../Core/Src/main.c:280:6:LinkedListControl	136	static
+../Core/Src/main.c:504:5:main	8	static
+../Core/Src/main.c:592:6:SystemClock_Config	88	static
+../Core/Src/main.c:633:13:MX_ADC1_Init	24	static
+../Core/Src/main.c:691:13:MX_TIM2_Init	64	static
+../Core/Src/main.c:750:13:MX_USART2_UART_Init	8	static
+../Core/Src/main.c:786:13:MX_GPIO_Init	56	static
+../Core/Src/main.c:817:6:Error_Handler	8	static,ignoring_inline_asm

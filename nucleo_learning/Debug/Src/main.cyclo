@@ -1,0 +1,10 @@
+../Src/main.c:19:6:SysTick_Handler	2
+../Src/main.c:33:6:EXTI2_3_IRQHandler	2
+../Src/main.c:48:6:SPI1_IRQHandler	1
+../Src/main.c:57:5:main	1
+../Src/main.c:87:13:EXTI_TestConfig	1
+../Src/main.c:115:13:GPIO_LedConfig	1
+../Src/main.c:131:13:ButtonInputConfig	1
+../Src/main.c:145:13:GPIO_ButtonInterruptConfig	1
+../Src/main.c:162:13:SPI_TestConfig	1
+../Src/main.c:184:13:SPI_GPIO_Config	1
