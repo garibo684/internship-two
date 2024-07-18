@@ -139,6 +139,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
+	HAL_UART_Transmit(huart, greeting_led, sizeof(greeting_led), 500);
+	led_flag = STATE_ON;
 }
 
 static void Led_GPIO_OutputInit(void)
@@ -532,16 +534,16 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-//  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-//  setPWM_Freq(100000);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+  setPWM_Freq(100000);
 
 
-//  HAL_ADC_Start(&hadc1);
-  //HAL_UART_Transmit_IT(&huart2, tx_buffer, sizeof(tx_buffer));
+  HAL_ADC_Start(&hadc1);
+  HAL_UART_Transmit_IT(&huart2, tx_buffer, sizeof(tx_buffer));
 
-  HAL_UART_Transmit(&huart2, greeting_list, sizeof(greeting_list), 500);
-
-  HAL_UART_Receive_IT(&huart2, &rx_buffer, sizeof(rx_buffer));
+//  HAL_UART_Transmit(&huart2, greeting_list, sizeof(greeting_list), 500);
+//
+//  HAL_UART_Receive_IT(&huart2, &rx_buffer, sizeof(rx_buffer));
 
 //  HAL_UART_Receive_IT(&huart2, rx_buffer, sizeof(rx_buffer));
 
@@ -567,16 +569,16 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	 // LedControl();
+	  LedControl();
 
-	  LinkedListControl();
+//	  LinkedListControl();
 
 
 
 //	  HAL_ADC_PollForConversion(&hadc1, 1000);
 //	  readValue = HAL_ADC_GetValue(&hadc1);
 //	  setPWM_DutyCycle(readValue);
-
+//
 //	  HAL_UART_Transmit(&huart2, tx_buffer, sizeof(tx_buffer), 1000);
 //	  HAL_Delay(1000);
 
