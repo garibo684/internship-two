@@ -62,6 +62,8 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 
+void TIM_IRQ_Handler(TIM_HandleTypeDef *htim);
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

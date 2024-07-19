@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "stdlib.h"
+#include "stdio.h"
 
 /* USER CODE END Includes */
 
@@ -45,10 +46,18 @@
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
+TIM_HandleTypeDef htim10;
+
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+char uart_buf[50];
+int uart_buf_len;
+uint16_t timer_val;
+double rx_buffer[20];
+uint8_t count = 0;
+float temp = 0;
+uint32_t adc_val = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,7 +66,20 @@ static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_TIM10_Init(void);
 /* USER CODE BEGIN PFP */
+
+void TIM_IRQ_Handler(TIM_HandleTypeDef *htim)
+{
+	if( (count < 20) && (adc_val != 0) )
+	{
+	  rx_buffer[count] = temp;
+	  count++;
+
+	  uart_buf_len = sprintf(uart_buf, "Data Written - %d C \r\n", (int)temp);
+	  HAL_UART_Transmit(&huart2, (uint8_t *)uart_buf, uart_buf_len, 100);
+	}
+}
 
 /* USER CODE END PFP */
 
@@ -68,8 +90,6 @@ static void MX_USART2_UART_Init(void);
 #define V_25C			0.76			// V
 #define V_SENSE			(3.0/4096) 		// for 12 bit resolution
 
-uint32_t adc_val = 0;
-float temp = 0;
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
@@ -110,14 +130,20 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_USART2_UART_Init();
+  MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
 
+
   HAL_ADC_Start_DMA(&hadc1, &adc_val, 1);
+  HAL_TIM_Base_Start(&htim10);
+
+
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
     /* USER CODE END WHILE */
@@ -221,6 +247,42 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief TIM10 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM10_Init(void)
+{
+
+  /* USER CODE BEGIN TIM10_Init 0 */
+
+  /* USER CODE END TIM10_Init 0 */
+
+  /* USER CODE BEGIN TIM10_Init 1 */
+
+  /* USER CODE END TIM10_Init 1 */
+  htim10.Instance = TIM10;
+  htim10.Init.Prescaler = 1000;
+  htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim10.Init.Period = 50000;
+  htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM10_Init 2 */
+
+  TIM10->CR1 |= TIM_CR1_URS;
+  TIM10->DIER |= TIM_DIER_UIE;
+  TIM10->EGR |= TIM_EGR_UG;
+
+  NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+  /* USER CODE END TIM10_Init 2 */
 
 }
 
