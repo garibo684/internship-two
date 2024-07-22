@@ -55,6 +55,7 @@ char uart_buf[50];
 int uart_buf_len;
 uint16_t timer_val;
 double rx_buffer[20];
+double tx_buffer[20];
 uint8_t count = 0;
 float temp = 0;
 uint32_t adc_val = 0;
@@ -69,15 +70,73 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM10_Init(void);
 /* USER CODE BEGIN PFP */
 
+uint32_t FlashWrite(uint32_t sector_address, double * data)
+{
+	uint32_t SECTORError;
+	static FLASH_EraseInitTypeDef EraseInitStruct;
+	uint8_t count = 0;
+
+	HAL_FLASH_Unlock();
+
+
+	  EraseInitStruct.TypeErase     = FLASH_TYPEERASE_SECTORS;
+	  EraseInitStruct.VoltageRange  = FLASH_VOLTAGE_RANGE_3;
+	  EraseInitStruct.Sector        = FLASH_SECTOR_5;
+	  EraseInitStruct.NbSectors     = 1;
+
+	  if (HAL_FLASHEx_Erase(&EraseInitStruct, &SECTORError) != HAL_OK)
+	  {
+		  return HAL_FLASH_GetError();
+	  }
+
+	  while( count < 20 )
+	  {
+		     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, sector_address, data[count]) == HAL_OK)
+		     {
+		    	 sector_address += 8;  // use StartPageAddress += 2 for half word and 8 for double word
+		    	 count++;
+		     }
+		     else
+		     {
+		       /* Error occurred while writing data in Flash memory*/
+		    	 return HAL_FLASH_GetError ();
+		     }
+
+	  }
+
+	  HAL_FLASH_Lock();
+
+	  return 0;
+}
+
+void FlashRead (uint32_t sector_address, double *buffer)
+{
+	uint8_t count = 0 ;
+
+	while (count < 20)
+	{
+
+		*buffer = *(__IO uint32_t *)sector_address;
+		sector_address += 8;
+		buffer++;
+		count++;
+	}
+}
+
 void TIM_IRQ_Handler(TIM_HandleTypeDef *htim)
 {
 	if( (count < 20) && (adc_val != 0) )
 	{
-	  rx_buffer[count] = temp;
+	  tx_buffer[count] = temp;
 	  count++;
 
-	  uart_buf_len = sprintf(uart_buf, "Data Written - %d C \r\n", (int)temp);
+	  uart_buf_len = sprintf(uart_buf, "Data Written --  %d C \r\n",  (int)temp);
 	  HAL_UART_Transmit(&huart2, (uint8_t *)uart_buf, uart_buf_len, 100);
+	}
+	else if(count == 20)
+	{
+		FlashWrite(0x08020000, tx_buffer);
+		count++;
 	}
 }
 
@@ -132,7 +191,14 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
+  FlashRead(0x08020000, rx_buffer);
+  for(int i = 0; i<20; i++)
+  {
+	  uart_buf_len = sprintf(uart_buf, "Data Read --  %d C \r\n",  (int)rx_buffer[i]);
+	  HAL_UART_Transmit(&huart2, (uint8_t *)uart_buf, uart_buf_len, 100);
+  }
 
+  HAL_Delay(5000);
 
   HAL_ADC_Start_DMA(&hadc1, &adc_val, 1);
   HAL_TIM_Base_Start(&htim10);
